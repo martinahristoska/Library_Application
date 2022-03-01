@@ -1,0 +1,83 @@
+<style xmlns:sec="http://www.w3.org/1999/xhtml">
+    #homepage {
+        color: #073839;
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    #add {
+        margin-left: 500px;
+        font-size: 18px;
+    }
+
+    #deletebtn {
+        float: left;
+    }
+</style>
+
+<div xmlns:th="http://www.thymeleaf.org">
+    <section id="hero" style="background-color: #FFFEFB;">
+        <div id="homepage">
+            <hr>
+            <h2 id="title">All categories </h2>
+            <hr>
+        </div>
+    </section>
+
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12" th:if="${categories.size() > 0}">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark" style="text-align: center">
+                        <tr style="text-align: center">
+                            <th scope="col">Category name</th>
+                            <th scope="col">Category description</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+                        <tr th:each="category : ${categories}">
+                            <td th:text="${category.getName()}"></td>
+                            <td th:text="${category.getDescription()}"></td>
+                            <!--<td>
+                                <div id="btns">
+                                    <div id="deletebtn">
+                                        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <form th:action="@{'/categories/delete/{id}' (id=${category.getId()})}"
+                                                  th:method="DELETE">
+                                                <button class="btn btn-sm btn-warning"
+                                                        type="submit">
+                                                    <i>Delete</i>
+                                                </button>
+                                            </form>
+                                        </th:block>
+                                    </div>
+                                    <div id="editbtn">
+                                        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <a class="btn btn-sm btn-warning"
+                                               th:href="@{'/categories/edit-form/{id}' (id=${category.getId()})}">
+                                                <i>Edit</i>
+                                            </a>
+                                        </th:block>
+                                    </div>
+                                </div>
+                            </td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="row" id="add">
+                    <div class="col-sm-12 col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-lg btn-info" style="background-color: #111e40; position: relative; right: 84px;" href="/categories/add-form">
+                            Add new category
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

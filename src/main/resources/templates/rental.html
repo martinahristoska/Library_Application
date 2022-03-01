@@ -1,0 +1,74 @@
+<style>
+    .boxes {
+        display: block;
+        width: 100%;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .boxes .box {
+        float: left;
+        width: calc((100% / 4) - 10px);
+        margin: 15px 5px;
+        border: 1px solid #eeeeee;
+        padding-bottom: 20px;
+        text-align: center;
+        height: 320px;
+    }
+
+    .boxes .box .image {
+
+        margin: auto;
+        width: 80%;
+        height: 40px;
+        text-align: center;
+        padding-bottom: 30px;
+        margin-top: 6px;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-primary {
+        font-family: "Lato", sans-serif;
+    }
+
+    .inside {
+        margin-top: 140px;
+    }
+
+    #homepage {
+        color: #073839;
+        text-align: center;
+        padding-top: 10px;
+    }
+</style>
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <section id="hero" style="background-color: #FFFEFB;">
+        <div id="homepage">
+            <hr>
+            <h2 id="title">Rentals</h2>
+            <hr>
+        </div>
+    </section>
+    <div th:if="${hasError}">
+        <h5 class="text-center text-danger" th:text="${error}"></h5>
+    </div>
+
+
+    <div class="boxes" th:if="${books.size() > 0}">
+
+        <div class="box" th:each="book : ${books}">
+            <div class="image"><img style="height: 200px;width: 150px" th:src="@{${book.getCover()}}"/></div>
+            <br>
+            <div class="inside">
+                <div>Title: <span th:text="${book.getTitle()}"></span></div>
+                <div>Author: <span th:text="${book.getAuthorName()}"></span></div>
+                <div>Category: <span th:text="${book.getCategory() != null}
+                            ? ${book.getCategory().getName()} : 'No Category'"></span></div>
+                <div>Publisher: <span th:text="${book.getPublisher() != null}
+                            ? ${book.getPublisher().getName()} : 'No Publisher'"></span></div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+
+

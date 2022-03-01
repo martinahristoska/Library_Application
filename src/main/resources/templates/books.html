@@ -1,0 +1,199 @@
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <style>
+        .boxes {
+            display: block;
+            width: 100%;
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+
+        .boxes .box {
+            float: left;
+            width: calc((100% / 4) - 10px);
+            margin: 15px 5px;
+            border: 1px solid #feffc7;
+            padding-bottom: 20px;
+            text-align: center;
+            height: 420px;
+        }
+
+        .boxes .box .image {
+
+            margin: auto;
+            width: 80%;
+            height: 40px;
+            text-align: center;
+            padding-bottom: 30px;
+            margin-top: 2px;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-primary {
+            font-family: "Lato", sans-serif;
+        }
+
+        #homepage {
+            color: #073839;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .inside {
+            margin-top: 140px;
+        }
+
+        #addbook {
+            margin-left: 1285px;
+            margin-top: 20px;
+        }
+
+        .kopche {
+            float: left;
+            font-size: 15px;
+            padding: 2px;
+        }
+
+        #kopchinja {
+            margin-left: 108px;
+            margin-right: 80px;
+        }
+
+        .bnns {
+            background-color: #111e40;
+            color: #f2f9f8;
+            font-size: 15px;
+            padding: 4px;
+        }
+
+        .bnns:hover {
+            background-color: darkgreen;
+        }
+
+        i {
+            padding: 3px;
+        }
+
+        .kopchegore {
+            float: left;
+            font-size: 15px;
+            padding: 2px;
+        }
+
+        #addbtn {
+            font-size: 18px;
+        }
+
+        #addbook {
+            margin-left: 1280px;
+        }
+
+        #filterBook
+        {
+            margin-left: 50px;
+        }
+
+        #rentbtn {
+            text-align: center;
+            margin-left: 150px;
+            margin-right: 100px;
+            margin-top: 4px;
+        }
+
+        #favbtn {
+            text-align: center;
+            margin-left: 120px;
+            margin-right: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<section id="hero" style="background-color: #FFFEFB;">
+    <div id="homepage">
+        <hr>
+        <h2 id="title">All books </h2>
+        <hr>
+    </div>
+</section>
+<section id="filterBook">
+    <form id="filter-form">
+        <div class="input-group">
+            <div class="form-outline">
+                <input id="nameSearch" type="search" name="nameSearch" class="form-control" placeholder="Search"
+                style="position: relative;right: -141px;"/>
+            </div>
+            <button id="filter" type="submit" class="btn btn-outline-primary" style="position: relative;right: -140px;">Search</button>
+        </div>
+    </form>
+
+    <section id="addbook">
+        <div class="col mb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="btn  btn-warning btn-sm ml-3" href="/books/add-form" id="addbtn" style="position: relative;top: -56px;">
+                        Add new book
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div xmlns:th="http://www.thymeleaf.org">
+        <div class="boxes">
+            <div class="box" th:each="book : ${books}">
+                <div class="image"><img style="height: 200px;width: 150px" th:src="@{${book.getCover()}}"/></div>
+                <br>
+                <div class="inside">
+                    <div>Title: <span th:text="${book.getTitle()}"></span></div>
+                    <div>Author: <span th:text="${book.getAuthorName()}"></span></div>
+                    <div>Category: <span th:text="${book.getCategory() != null}
+                            ? ${book.getCategory().getName()} : 'No Category'"></span></div>
+                    <div>Publisher: <span th:text="${book.getPublisher() != null}
+                            ? ${book.getPublisher().getName()} : 'No Publisher'"></span></div>
+                </div>
+                <div id="kopchinja">
+                <span class="kopche" style=" position: relative;right: 25px;"><th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form th:action="@{'/books/delete/{id}' (id=${book.getId()})}" th:method="DELETE">
+                        <button class="btn btn-warning btn-sm ml-3" type="submit"><i class="fa fa-trash"></i><i>  Delete  </i></button>
+                    </form>
+                </th:block></span>
+
+                    <span class="kopche" style="position: relative;top: -35px;left: 63px;"><th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="btn btn-warning btn-sm ml-3"
+                       th:href="@{'/books/edit-form/{id}' (id=${book.getId()})}"> <i class="fa fa-edit"></i><i>   Edit  </i></a>
+                </th:block></span>
+
+                </div>
+                <br>
+                <div id="rentbtn">
+                <span class="kopchegore" id="rentbook" style="position: relative;top: -33px;"><th:block sec:authorize="isAuthenticated()">
+                    <form th:action="@{'/rental/add-book/{id}' (id=${book.getId()})}"
+                          th:method="POST">
+                        <button class="btn btn-primary btn-sm ml-3 bnns" type="submit"><i>  Rent  </i>   </button>
+                    </form>
+                </th:block></span>
+                </div>
+                <div id="favbtn">
+                <span class="kopchegore" id="favoritebooks" style="position: relative;top: -33px;"><th:block sec:authorize="isAuthenticated()">
+                    <form th:action="@{'/favorite-books/add-book/{id}' (id=${book.getId()})}"
+                          th:method="POST">
+                        <button class="btn btn-primary btn-sm ml-3 bnns"
+                                type="submit"><i> Add to favorite  </i>   </button>
+                    </form>
+                </th:block></span>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <form th:action="@{'/addRatings/{id}' (id=${book.getId()})}">
+                            <button type="submit"
+                                    class="btn ml-2"
+                                    style="background-color: seagreen; color: white; position: relative;top: -33px;" ><span>
+                                                            <i class="fa fa-star"></i> Rate
+                                    </span>
+                            </button>
+                        </form>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script crossorigin='anonymous' src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://www.jqwidgets.com/public/jqwidgets/styles/jqx.base.css" rel="stylesheet" type="text/css"/>
+    <link href="https://www.jqwidgets.com/public/jqwidgets/styles/jqx.energyblue.css" rel="stylesheet" type="text/css"/>
+    <script src="https://www.jqwidgets.com/public/jqwidgets/jqx-all.js" type="text/javascript"></script>
+    <script src="https://www.jqwidgets.com/public/jqwidgets/globalization/globalize.js" type="text/javascript"></script>
+    <link href="https://www.jqwidgets.com/public/jqwidgets/styles/jqx.arctic.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .nav-link {
+            color: white;
+        }
+
+        a {
+            color: white;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-decoration: none;
+            text-underline: none;
+        }
+        .navbar-custom {
+            background-color: darkslateblue;
+        }
+    </style>
+</head>
+<body style="background-color: #feffc7;">
+<div class="container mt-4" style="background-color: #feffc7;">
+    <div class="row">
+        <div class="mt-2 col-5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title font-weight-bolder text-uppercase mt-2">
+                                Book information
+                            </h5>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                </div>
+                <div class="card-body" style="background-color: #FFFEFB;">
+                    <div class="row">
+                        <div class="col-6">
+                            <span><b>Title:</b> </span> <th:block th:text="${book.getTitle()}"></th:block>
+                            <br>
+                            <span><b>Author:</b> </span> <th:block th:text="${book.getAuthorName()}"></th:block>
+                            <br>
+                            <span><b>Publisher: </b></span> <th:block th:text="${book.getPublisher().getName()}"></th:block>
+                            <br>
+                            <span><b>Category: </b></span> <th:block th:text="${book.getCategory().getName()}"></th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-6 mt-2">
+            <div class="row">
+                <div class="col mt-3">
+                    <h5>Add rating for this book: </h5>
+                </div>
+                <div class="col">
+                    <a href="/createRating" style="background-color: slateblue; color: white"
+                       class="btn btn-lg float-right ml-1">
+                        Add new rating</a>
+                </div>
+            </div>
+            <hr>
+            <div class="container mt-4" style="font-size: larger;">
+                <form th:method="POST" th:action="@{/addRatings}">
+                    <input type="hidden" name="bookId" th:value="${book.getId()}"/>
+                    <div class="row" th:each="rating: ${ratings}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="ratingId" th:id="${rating.getId()}" th:value="${rating.getId()}">
+                            <label class="form-check-label" style="font-weight: bolder;" th:for="${rating.getId()}">
+                                 <th:block th:text="${rating.getNumber()}"></th:block>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row text-center mt-2">
+                        <button type="submit" class="btn btn-success btn-lg float-left" style="width: 140px;">Add rating</button>
+                        <a href="/books" class="btn btn-warning btn-lg text-white ml-3" style="width: 140px;"><i class="fa fa-backward"></i> Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

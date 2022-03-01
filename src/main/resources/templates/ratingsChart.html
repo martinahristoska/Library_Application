@@ -1,0 +1,92 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Readers Chart</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+
+        @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+        .nav-link {
+            color: white;
+        }
+
+        a {
+            color: white;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-decoration: none;
+            text-underline: none;
+        }
+        .navbar-custom {
+            background-color: darkslateblue;
+        }
+    </style>
+</head>
+<body style="background-color: #feffc7;">
+<div id="container" class="mt-4"
+     style="width: 950px; height: 570px; margin: 0 auto; background-color: #feffc7;">
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+    $(function(){
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'BOOK RATING'.bold()
+            },
+            subtitle: {
+                text: 'Visual representation of maximum rating per book'
+            },
+            xAxis: {
+                categories: [[${bookMap.keySet()}]],
+                crosshair: true
+            },
+            colors: ['#0a64ad','#6cb2eb'],
+            yAxis: {
+                min: 0,
+                max:8,
+                title: {
+                    text: 'Maximum rating'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:15px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0; font-size: 15px">{series.name}: </td>' +
+                    '<td style="padding:0; font-size: 15px"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Max Rating',
+                data: [[${bookMap.values()}]],
+            }]
+        });
+    });
+</script>
+</body>
+</html>

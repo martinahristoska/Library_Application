@@ -1,0 +1,218 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Register</title>
+        <style>
+            body {
+                margin: 0;
+                background: #EBF8F8;
+            }
+
+            .page-content {
+                width: 100%;
+                margin: 0 auto;
+                background: #EBF8F8;
+                display: flex;
+                display: -webkit-flex;
+                justify-content: center;
+                align-items: center;
+                -webkit-align-items: center;
+            }
+
+            .form-v5-content {
+                background: #fff;
+                width: 670px;
+                border-radius: 8px;
+                /*margin: 175px 0;*/
+                margin: 40px 0;
+                font-family: 'Roboto', sans-serif;
+                color: #333;
+                font-weight: 400;
+                position: relative;
+                font-size: 18px;
+            }
+
+            .form-v5-content .form-detail {
+                padding: 30px 45px 30px 45px;
+                position: relative;
+            }
+
+            .form-detail #first h2 {
+                font-weight: 700;
+                font-size: 25px;
+                text-align: center;
+                position: relative;
+                padding: 3px 0 20px;
+                margin-bottom: 40px;
+            }
+
+            .form-detail #first h2::after {
+                background: #3786bd;
+                width: 50px;
+                height: 2px;
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .form-detail .form-row {
+                position: relative;
+            }
+
+            .form-detail .form-row-last {
+                text-align: center;
+            }
+
+            .form-detail #first label {
+                display: block;
+                font-size: 18px;
+                padding-bottom: 10px;
+            }
+
+            .form-detail #second label {
+                display: block;
+                font-size: 18px;
+                padding-bottom: 10px;
+            }
+
+            .form-detail #first .input-text {
+                margin-bottom: 26px;
+            }
+
+            .form-detail #first input {
+                width: 92.5%;
+                padding: 10.5px 15px;
+                margin-left: 3px;
+                border: 1px solid #e5e5e5;
+                appearance: unset;
+                outline: none;
+                border-radius: 4px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 400;
+                font-size: 18px;
+            }
+
+            .form-detail #first input:focus {
+                border: 1px solid #b3b3b3;
+            }
+
+            .form-detail .register {
+                font-size: 18px;
+                color: #fff;
+                background: #3786bd;
+                border-radius: 5px;
+                width: 180px;
+                box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.2);
+                border: none;
+                margin: 19px 0 40px;
+                cursor: pointer;
+            }
+
+            .form-detail .register:hover {
+                background: #2f73a3;
+            }
+
+            .form-detail .form-row-last input {
+                padding: 14px;
+            }
+
+            .form-detail #first i {
+                font-size: 14px;
+                color: #999;
+                right: 15px;
+                top: 50%;
+                transform: translateX(-50%);
+                position: absolute;
+            }
+
+            input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                color: #999;
+                font-size: 16px;
+            }
+
+            /* Responsive */
+            @media screen and (max-width: 767px) {
+                .form-v5-content {
+                    margin: 175px 20px;
+                }
+            }
+
+        </style>
+    </head>
+    <body class="form-v5">
+    <div>
+
+    </div>
+    <div class="page-content">
+        <div class="form-v5-content">
+            <form action="/books/add" class="form-detail" method="post">
+                <div id="first">
+                    <div class="form-row">
+                        <label for="title">Book title</label>
+                        <input class="input-text" id="title" name="title"
+                               placeholder="Book title" required th:value="(${book} != null ? ${book.getTitle()} : '')" type="text">
+                        <p></p>
+                    </div>
+                    <div class="form-row">
+                        <label for="authorName">Author name</label>
+                        <input class="input-text" id="authorName" name="authorName"
+                               placeholder="Author name" required th:value="(${book} != null ? ${book.getAuthorName()} : '')" type="text">
+                    </div>
+                    <div class="form-row">
+                        <label for="category">Category</label>
+                        <select class="form-control input-text" id="category" name="category">
+                            <option th:each="cat : ${categories}"
+                                    th:if="${book} != null"
+                                    th:selected="${book.getCategory() != null &&
+                                book.getCategory().getId() == cat.getId()}"
+                                    th:text="${cat.getName()}"
+                                    th:value="${cat.getId()}">
+                            </option>
+                            <option th:each="cat : ${categories}"
+                                    th:if="${book} == null"
+                                    th:text="${cat.getName()}"
+                                    th:value="${cat.getId()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="publisher">Publisher</label>
+                        <select class="form-control input-text" id="publisher" name="publisher">
+                            <option th:each="publisher : ${publishers}"
+                                    th:if="${book} != null"
+                                    th:selected="${book.getPublisher() != null && book.getPublisher().getId() == publisher.getId()}"
+                                    th:text="${publisher.getName()}"
+                                    th:value="${publisher.getId()}">
+                            </option>
+                            <option th:each="publisher : ${publishers}"
+                                    th:if="${book} == null"
+                                    th:text="${publisher.getName()}"
+                                    th:value="${publisher.getId()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-row input-text">
+                        <label for="cover">Book cover</label>
+                        <input class="form-control"
+                               id="cover"
+                               name="cover"
+                               placeholder="Book cover"
+                               th:value="(${book} != null ? ${book.getCover()} : '')"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-row-last">
+                    <button class="register" type="submit">Submit</button>
+                    <a class="register" href="/books" type="button">Back</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    </body>
+    </html>
+</th:block>
